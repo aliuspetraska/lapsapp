@@ -101,14 +101,14 @@ namespace LapsWebApi
 
     public class LapsAppDbContext : DbContext
     {
-        public DbSet<Track> Dashboard { get; set; }
+        public DbSet<Track> Tracks { get; set; }
 
         // http://www.mithunvp.com/aspnet-core-web-api-entity-framework-core/
 
         // https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/migrations
 
         // dotnet ef migrations remove
-        // dotnet ef migrations add ParkingSharing
+        // dotnet ef migrations add LapsAppDb
         // dotnet ef database update
 
         public LapsAppDbContext(DbContextOptions options) : base(options) { }

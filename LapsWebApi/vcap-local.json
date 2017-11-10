@@ -1,0 +1,30 @@
+﻿{
+    "compose-for-mysql": [
+        {
+            "credentials": {
+                "db_type": "mysql",
+                "uri_cli_1": "mysql -u admin -p --host sl-us-south-1-portal.9.dblayer.com --port 27400 --ssl-mode=REQUIRED",
+                "maps": [],
+                "name": "bmix-dal-yp-ce2f3bfb-2b34-44ca-9c6c-c9b6aaa73b77",
+                "uri_cli": "mysql -u admin -p --host sl-us-south-1-portal.2.dblayer.com --port 27400 --ssl-mode=REQUIRED",
+                "uri_direct_1": "mysql://admin:EYLILRQBNRCFXOAY@sl-us-south-1-portal.9.dblayer.com:27400/compose",
+                "ca_certificate_base64": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURnVENDQW1tZ0F3SUJBZ0lFV2dXQzdUQU5CZ2txaGtpRzl3MEJBUTBGQURCQ01VQXdQZ1lEVlFRREREZGgKYkdsMWN5NXdaWFJ5WVhOcllVQnBZbTB1WTI5dExUSXdaVEJsWlRNNU56RXhZMkl4WkRFMFpEYzVZV05pTVRJdwpZVFE1T1dVeE1CNFhEVEUzTVRFeE1ERXdORE0xTjFvWERUTTNNVEV4TURFd01EQXdNRm93UWpGQU1ENEdBMVVFCkF3dzNZV3hwZFhNdWNHVjBjbUZ6YTJGQWFXSnRMbU52YlMweU1HVXdaV1V6T1RjeE1XTmlNV1F4TkdRM09XRmoKWWpFeU1HRTBPVGxsTVRDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTFAzdWxBZgprcVdUNmlqUFJTMU54ZzJHWm4zbkl5L1JoSFRibVMyUzUya3AycVJPN3JYQWFYaWZkWTlQdHh5S1JhM054TVZpCmdFVW9LWXh2UlRaSHBpTWZYbThEMnRZVW1Bc0pJdmFhbStMYWYvUTRPRGhHSkFSNnZlV29PL0N6QkRSSmdBb3MKQUx4S1BZSXZ1Z0Z3M1NnUGFJalJxQkd0c2xSSFgrVThmSkZxVEFIaDBzWDRvaUZoWFJYbzNNUXVyWC9xR2pPaQp6c3pGNi9CRy9zdEc2VnNRT0srYVdURlBOcFB0SGdCNHNaVDFsMjJjbmMvK0ZnbmJuU3Z6MnhVZFRiMnh1RkdECkRZTkxzNVFXTkVEN1M4UHM1M2Z4ZkhHWERiQmhISkozZ05IaC9sdy9FdUtscWlneXArampUeUhHNUh3YUlhdVcKamN1TVgvRGQySjV4UTFNQ0F3RUFBYU4vTUgwd0hRWURWUjBPQkJZRUZQcWp5dTlla1hMT0NFT0tZb29leVprYwpRVVdoTUE0R0ExVWREd0VCL3dRRUF3SUNCREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNEQVFZSUt3WUJCUVVICkF3SXdEQVlEVlIwVEJBVXdBd0VCL3pBZkJnTlZIU01FR0RBV2dCVDZvOHJ2WHBGeXpnaERpbUtLSHNtWkhFRkYKb1RBTkJna3Foa2lHOXcwQkFRMEZBQU9DQVFFQVNzK2k5aktyL29EaEpnVmNFMUxiZHlLTzRUZk1kMjkzcm5ZaAplTmFiSVR3aXdxZVU5UkZ0czZZWmMwTTlVL1hmNlZNVitaUDBoWHJzU0hNWjBFcmhOaEhFaCt2ZGY0U0Q2ckdhClFGOWxXRHNZUklHeTRUdE4vMGg3OUVTTkZRYnJrVjI3S2Q1SEV1clZKVWIrQ3VJUHRQOEpzWnFUR1IyVG1QTTQKajNZMDJ0NHJ3djRLWTJnbzlyZnl4Skt5UlRrdnRNMDVyTy9qTmovRzdoenhURThkbjZObE5yRFVBRUViNTY1NQpacGx5SXV2dy80ektmU2hjV0IzZFk1SVVvT2JMd0JrdXQ4cGhOenlYdVdTdldvSHdhTTVaa1NqdTduRkhXQ3BNCnpZS2hqd29vMzgvVy9Cc1h6K1lLTFl0aUhRS3JkWU1PZlR5UWsxcFpOMHJHVU1WRW93PT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=",
+                "deployment_id": "5a0582e9b7d6f00015b43dfe",
+                "uri": "mysql://admin:EYLILRQBNRCFXOAY@sl-us-south-1-portal.2.dblayer.com:27400/compose"
+            },
+            "syslog_drain_url": null,
+            "volume_mounts": [],
+            "label": "compose-for-mysql",
+            "provider": null,
+            "plan": "Standard",
+            "name": "compose-for-mysql",
+            "tags": [
+                "big_data",
+                "data_management",
+                "ibm_created",
+                "ibm_beta",
+                "ibm_dedicated_public"
+            ]
+        }
+    ]
+}
