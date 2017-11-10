@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Linq;
+using LapsWebApi.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -42,7 +46,7 @@ namespace LapsWebApi
 
             if (!string.IsNullOrEmpty(databaseUri))
             {
-                services.AddDbContext<ParkingSharingContext>(options => options.UseMySql(
+                services.AddDbContext<LapsAppDbContext>(options => options.UseMySql(
                     GetConnectionString(databaseUri)));
 
                 services.AddDataProtection()
@@ -50,6 +54,33 @@ namespace LapsWebApi
             }
 
             services.AddMvc();
+        }
+
+        static string GetConnectionString(string databaseUri)
+        {
+            string connectionString;
+
+            try
+            {
+                var username = databaseUri.Split('/')[2].Split(':')[0];
+                var password = databaseUri.Split(':')[2].Split('@')[0];
+                var portSplit = databaseUri.Split(':');
+                var port = portSplit.Length == 4 ? portSplit[3].Split('/')[0] : null;
+                var hostSplit = databaseUri.Split('@')[1];
+                var hostname = port == null ? hostSplit.Split('/')[0] : hostSplit.Split(':')[0];
+                var databaseSplit = databaseUri.Split('/');
+                var database = databaseSplit.Length == 4 ? databaseSplit[3] : null;
+                var optionsSplit = database?.Split('?');
+                database = optionsSplit.First();
+                port = port ?? "3306"; // if port is null, use 3306
+                connectionString = $"Server={hostname};uid={username};pwd={password};Port={port};Database={database};SSL Mode=Required;";
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                throw new FormatException("Invalid database uri format", ex);
+            }
+
+            return connectionString;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,9 +91,27 @@ namespace LapsWebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/static-files
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
             app.UseMvc();
         }
+    }
+
+    public class LapsAppDbContext : DbContext
+    {
+        public DbSet<Track> Dashboard { get; set; }
+
+        // http://www.mithunvp.com/aspnet-core-web-api-entity-framework-core/
+
+        // https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/migrations
+
+        // dotnet ef migrations remove
+        // dotnet ef migrations add ParkingSharing
+        // dotnet ef database update
+
+        public LapsAppDbContext(DbContextOptions options) : base(options) { }
+        public LapsAppDbContext() { }
     }
 }
