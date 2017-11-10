@@ -29,7 +29,11 @@ namespace LapsWebApi.Controllers
         {
             try {
                 string[] fileEntries = Directory.GetFiles(Path.Combine(_env.WebRootPath, "tracks"));
-                string[] ignoredFiles = { Path.Combine(_env.WebRootPath, "tracks", ".DS_Store") };
+
+                string[] ignoredFiles = { 
+                    Path.Combine(_env.WebRootPath, "tracks", ".DS_Store"),
+                    Path.Combine(_env.WebRootPath, "tracks", ".gitkeep")
+                };
 
                 fileEntries = fileEntries.Except(ignoredFiles).ToArray();
 

@@ -37,4 +37,4 @@ vcap-local.json
 .droidres/
 
 # Project Related
-**/wwwroot/images/
+**/wwwroot/images/**/*.png
