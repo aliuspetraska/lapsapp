@@ -1,19 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Net;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace LapsWebApi.Controllers
 {
+    [Route("api/[controller]")]
     public class ImportController : Controller
     {
-        // GET: /<controller>/
-        public IActionResult Index()
+        private IHostingEnvironment _env;
+        private WebClient webClient = new WebClient();
+
+        public ImportController(IHostingEnvironment env)
         {
-            return View();
+            _env = env;
+        }
+
+        [HttpGet]
+        public JsonResult Get()
+        {
+            string[] output = { "OK" };
+
+            return new JsonResult(output);
         }
     }
 }
