@@ -39,3 +39,14 @@ vcap-local.json
 
 # Project Related
 **/wwwroot/images/**/*.png
+
+# Bluemix exceptions
+[Ll]apsMobileApp/
+[Ii]OS/
+[Pp]ackages/
+**/LapsMobileApp/
+**/iOS/
+**/packages/
+LapsMobileApp/
+iOS/
+packages/
