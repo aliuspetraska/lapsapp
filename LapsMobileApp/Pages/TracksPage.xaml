@@ -3,7 +3,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms" 
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     x:Class="LapsMobileApp.Pages.TracksPage" 
-    Padding="0" BackgroundColor="White">
+    Padding="0" BackgroundColor="#F2F2F2">
 	<ContentPage.Content>
         <StackLayout HorizontalOptions="FillAndExpand" 
             VerticalOptions="FillAndExpand" 
@@ -15,18 +15,31 @@
                 CachingStrategy="RecycleElement"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand"
+                SeparatorVisibility="Default"
+                SeparatorColor="#F2F2F2"
+                BackgroundColor="#F2F2F2"
                 HasUnevenRows="true"
-                IsVisible="false">
+                IsVisible="false"
+                Margin="0">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout HorizontalOptions="FillAndExpand"
-                                BackgroundColor="Yellow"
-                                Orientation="Vertical"
+                                BackgroundColor="White"
                                 Spacing="0" 
                                 Padding="0" 
                                 Margin="0">
-                                <Image Source="{Binding Thumbnail}" HeightRequest="100" HorizontalOptions="FillAndExpand" />
+                                <Image Source="{Binding Thumbnail}"
+                                    HorizontalOptions="FillAndExpand"
+                                    Aspect="AspectFill" 
+                                    HeightRequest="180"
+                                    Margin="10"/>
+                                <StackLayout HeightRequest="10"
+                                    HorizontalOptions="FillAndExpand"
+                                    BackgroundColor="#F2F2F2"
+                                    Spacing="0" 
+                                    Padding="0" 
+                                    Margin="0"/>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
@@ -35,7 +48,7 @@
             <ActivityIndicator x:Name="activityIndicator"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand"
-                BackgroundColor="White"
+                BackgroundColor="#F2F2F2"
                 Color="Black"
                 IsEnabled="true"
                 IsRunning="true"

@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LapsMobileApp.Models;
 using Xamarin.Forms;
 
 namespace LapsMobileApp.Pages
 {
     public partial class TrackPage : ContentPage
     {
-        public TrackPage()
+        private Track _track;
+
+        public TrackPage(Track track)
         {
             InitializeComponent();
+
+            NavigationPage.SetBackButtonTitle(this, "Back");
+
+            _track = track;
         }
 
         protected override void OnAppearing()

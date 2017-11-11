@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="CustomRenderers\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -124,6 +125,8 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="CustomRenderers\CustomListViewRenderer.cs" />
+    <Compile Include="CustomRenderers\CustomViewCellRenderer.cs" />
   </ItemGroup>
   <Import Project="..\LapsMobileApp\LapsMobileApp.projitems" Label="Shared" Condition="Exists('..\LapsMobileApp\LapsMobileApp.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

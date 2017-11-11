@@ -15,11 +15,24 @@ namespace LapsMobileApp.Pages
         public TracksPage()
         {
             InitializeComponent();
+
+            NavigationPage.SetBackButtonTitle(this, "Back");
+
+            listView.ItemSelected += async (object sender, SelectedItemChangedEventArgs e) => 
+            {
+                if (e.SelectedItem != null) 
+                {
+                    var track = e.SelectedItem as Track;
+                    await Navigation.PushAsync(new TrackPage(track));
+                }
+            };
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+
+            listView.SelectedItem = null;
 
             listView.IsVisible = false;
             activityIndicator.IsVisible = true;

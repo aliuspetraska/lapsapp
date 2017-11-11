@@ -62,14 +62,19 @@ namespace LapsWebApi.Controllers
 
                         // https://www.mapbox.com/api-documentation/#retrieve-a-static-map-from-a-style
 
-                        string url = "https://api.mapbox.com/styles/v1/mapbox/light-v9/static/path-5+f44-0.5(" +
+                        string url1 = "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/path-5+f44-0.5(" +
                             HttpUtility.UrlEncode(polyline) + ")/auto/500x300?access_token=pk.eyJ1IjoiYWxpdXNwZXRyYXNrYSIsImEiOiJjajlxd3pmbjg2OGR6MnFxdDk5M205dmI1In0.6zIodwQbHVLbPfbhBEdRhg";
 
-                        webClient.DownloadFile(url, Path.Combine(_env.WebRootPath, "images", Path.GetFileName(file).Replace(".gpx", string.Empty) + ".png"));
+                        webClient.DownloadFile(url1, Path.Combine(_env.WebRootPath, "images", Path.GetFileName(file).Replace(".gpx", string.Empty) + ".png"));
 
                         if (tracks.Any(row => row.Id == trackId))
                         {
-                            Console.WriteLine("Track already imported. Update.");
+                            // Update Track Image
+
+                            string url2 = "https://api.mapbox.com/styles/v1/mapbox/streets-v10/static/path-5+f44-0.5(" +
+                                HttpUtility.UrlEncode(polyline) + ")/auto/500x300?access_token=pk.eyJ1IjoiYWxpdXNwZXRyYXNrYSIsImEiOiJjajlxd3pmbjg2OGR6MnFxdDk5M205dmI1In0.6zIodwQbHVLbPfbhBEdRhg";
+
+                            webClient.DownloadFile(url2, Path.Combine(_env.WebRootPath, "images", Path.GetFileName(file).Replace(".gpx", string.Empty) + ".png"));
                         }
                         else
                         {
