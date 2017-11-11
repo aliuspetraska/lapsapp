@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LapsWebApi.Controllers
@@ -17,7 +18,9 @@ namespace LapsWebApi.Controllers
         {
             if (_lapsDbContext != null)
             {
-                return Json(_lapsDbContext.Tracks);
+                return Json(
+                    _lapsDbContext.Tracks.OrderByDescending(o => o.Timestamp)
+                );
             }
             else
             {
