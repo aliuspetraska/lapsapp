@@ -1,5 +1,5 @@
 ﻿using System;
-
+using LapsMobileApp.Pages;
 using Xamarin.Forms;
 
 namespace LapsMobileApp
@@ -9,22 +9,10 @@ namespace LapsMobileApp
         public App()
         {
             // The root page of your application
-            var content = new ContentPage
+            MainPage = new NavigationPage(new TracksPage
             {
-                Title = "LapsMobileApp",
-                Content = new StackLayout
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                    Children = {
-                        new Label {
-                            HorizontalTextAlignment = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!"
-                        }
-                    }
-                }
-            };
-
-            MainPage = new NavigationPage(content);
+                Title = "Tracks List"
+            });
         }
 
         protected override void OnStart()

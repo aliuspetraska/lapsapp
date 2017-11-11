@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="LapsMobileApp.Pages.TracksPage" 
+    Padding="0" BackgroundColor="White">
+	<ContentPage.Content>
+        <StackLayout HorizontalOptions="FillAndExpand" 
+            VerticalOptions="FillAndExpand" 
+            Orientation="Vertical" 
+            Spacing="0" 
+            Padding="0" 
+            Margin="0">
+            <ListView x:Name="listView"
+                CachingStrategy="RecycleElement"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                IsVisible="false">
+            </ListView>
+            <ActivityIndicator x:Name="activityIndicator"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                BackgroundColor="White"
+                Color="Black"
+                IsEnabled="true"
+                IsRunning="true"
+                IsVisible="true">
+            </ActivityIndicator>
+        </StackLayout>
+	</ContentPage.Content>
+</ContentPage>
