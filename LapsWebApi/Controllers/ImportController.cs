@@ -33,47 +33,48 @@ namespace LapsWebApi.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            try {
-                string[] fileEntries = Directory.GetFiles(Path.Combine(_env.WebRootPath, "tracks"));
-
-                string[] ignoredFiles = { 
-                    Path.Combine(_env.WebRootPath, "tracks", ".DS_Store"),
-                    Path.Combine(_env.WebRootPath, "tracks", ".gitkeep")
-                };
-
-                fileEntries = fileEntries.Except(ignoredFiles).ToArray();
-
-                foreach (string file in fileEntries)
+            if (_lapsDbContext != null)
+            {
+                try
                 {
-                    var result = CleanupDuplicates(
-                        ParseGpxToCoordinates(file));
+                    string[] fileEntries = Directory.GetFiles(Path.Combine(_env.WebRootPath, "tracks"));
 
-                    var distance = CalculateTotalDistance(result);
+                    string[] ignoredFiles = {
+                        Path.Combine(_env.WebRootPath, "tracks", ".DS_Store"),
+                        Path.Combine(_env.WebRootPath, "tracks", ".gitkeep")
+                    };
 
-                    var minime = CleanupDuplicates(
-                        ReducedAmountOfCoordinates(result));
+                    fileEntries = fileEntries.Except(ignoredFiles).ToArray();
 
-                    var polyline = BuildEncodedPolyline(minime);
+                    var tracks = _lapsDbContext.Tracks.ToList();
 
-                    if (_lapsDbContext != null)
+                    foreach (string file in fileEntries)
                     {
                         var trackId = Path.GetFileName(file).Replace(".gpx", string.Empty);
 
-                        var track = new Track
-                        {
-                            Id = trackId,
-                            Coordinates = JsonConvert.SerializeObject(result),
-                            Distance = distance,
-                            Thumbnail = "https://lapsapp.mybluemix.net/images/" + trackId + ".png",
-                            Timestamp = DateTime.Now
-                        };
-
-                        if (_lapsDbContext.Tracks.ToList().Any(row => row.Id == track.Id))
+                        if (tracks.Any(row => row.Id == trackId))
                         {
                             Console.WriteLine("Track already imported. Update.");
-                        } 
-                        else 
+                        }
+                        else
                         {
+                            var result = CleanupDuplicates(ParseGpxToCoordinates(file));
+
+                            var distance = CalculateTotalDistance(result);
+
+                            var minime = CleanupDuplicates(ReducedAmountOfCoordinates(result));
+
+                            var polyline = BuildEncodedPolyline(minime);
+
+                            var track = new Track
+                            {
+                                Id = trackId,
+                                Coordinates = JsonConvert.SerializeObject(result),
+                                Distance = distance,
+                                Thumbnail = "https://lapsapp.mybluemix.net/images/" + trackId + ".png",
+                                Timestamp = DateTime.Now
+                            };
+
                             // https://www.mapbox.com/api-documentation/#retrieve-a-static-map-from-a-style
 
                             string url = "https://api.mapbox.com/styles/v1/mapbox/light-v9/static/path-5+f44-0.5(" +
@@ -85,16 +86,28 @@ namespace LapsWebApi.Controllers
                             _lapsDbContext.SaveChanges();
                         }
                     }
-                }
 
-                return Json(new { 
-                    Status = "ok",
-                    Message = fileEntries.Count() + " tracks imported."
-                });
-            } catch (Exception ex) {
-                return Json(new { 
-                    Status = "error", 
-                    Message = ex.InnerException
+                    return Json(new
+                    {
+                        Status = "ok",
+                        Message = fileEntries.Count() + " tracks imported."
+                    });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new
+                    {
+                        Status = "error",
+                        Message = ex.InnerException
+                    });
+                }
+            }
+            else
+            {
+                return Json(new
+                {
+                   Status = "error",
+                   Message = "Can't connect to DB."
                 });
             }
         }
