@@ -21,13 +21,13 @@ namespace LapsWebApi.Controllers
 
         private WebClient webClient = new WebClient();
 
-        private readonly LapsAppDbContext _lapsAppDbContext;
+        private readonly LapsDbContext _lapsDbContext;
 
-        public ImportController(IHostingEnvironment env, LapsAppDbContext lapsAppDbContext = null)
+        public ImportController(IHostingEnvironment env, LapsDbContext lapsDbContext = null)
         {
             _env = env;
 
-            _lapsAppDbContext = lapsAppDbContext;
+            _lapsDbContext = lapsDbContext;
         }
 
         [HttpGet]
@@ -55,14 +55,7 @@ namespace LapsWebApi.Controllers
 
                     var polyline = BuildEncodedPolyline(minime);
 
-                    // https://www.mapbox.com/api-documentation/#retrieve-a-static-map-from-a-style
-
-                    string url = "https://api.mapbox.com/styles/v1/mapbox/light-v9/static/path-5+f44-0.5(" +
-                        HttpUtility.UrlEncode(polyline) + ")/auto/500x300?access_token=pk.eyJ1IjoiYWxpdXNwZXRyYXNrYSIsImEiOiJjajlxd3pmbjg2OGR6MnFxdDk5M205dmI1In0.6zIodwQbHVLbPfbhBEdRhg";
-
-                    webClient.DownloadFile(url, Path.Combine(_env.WebRootPath, "images", Path.GetFileName(file).Replace(".gpx", string.Empty) + ".png"));
-
-                    if (_lapsAppDbContext != null)
+                    if (_lapsDbContext != null)
                     {
                         var trackId = Path.GetFileName(file).Replace(".gpx", string.Empty);
 
@@ -71,17 +64,25 @@ namespace LapsWebApi.Controllers
                             Id = trackId,
                             Coordinates = JsonConvert.SerializeObject(result),
                             Distance = distance,
-                            Thumbnail = "https://lapsapp.mybluemix.net/images/" + trackId + ".png"
+                            Thumbnail = "https://lapsapp.mybluemix.net/images/" + trackId + ".png",
+                            Timestamp = DateTime.Now
                         };
 
-                        if (_lapsAppDbContext.Tracks.ToList().Any(row => row.Id == track.Id))
+                        if (_lapsDbContext.Tracks.ToList().Any(row => row.Id == track.Id))
                         {
                             Console.WriteLine("Track already imported. Update.");
                         } 
                         else 
                         {
-                            _lapsAppDbContext.Add(track);
-                            _lapsAppDbContext.SaveChanges();
+                            // https://www.mapbox.com/api-documentation/#retrieve-a-static-map-from-a-style
+
+                            string url = "https://api.mapbox.com/styles/v1/mapbox/light-v9/static/path-5+f44-0.5(" +
+                                HttpUtility.UrlEncode(polyline) + ")/auto/500x300?access_token=pk.eyJ1IjoiYWxpdXNwZXRyYXNrYSIsImEiOiJjajlxd3pmbjg2OGR6MnFxdDk5M205dmI1In0.6zIodwQbHVLbPfbhBEdRhg";
+
+                            webClient.DownloadFile(url, Path.Combine(_env.WebRootPath, "images", Path.GetFileName(file).Replace(".gpx", string.Empty) + ".png"));
+
+                            _lapsDbContext.Add(track);
+                            _lapsDbContext.SaveChanges();
                         }
                     }
                 }

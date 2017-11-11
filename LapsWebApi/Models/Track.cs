@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace LapsWebApi.Models
 {
@@ -20,5 +21,9 @@ namespace LapsWebApi.Models
         [Required]
         [StringLength(255)]
         public string Thumbnail { get; set; }
+
+        [Required]
+        [MaxLength]
+        public DateTime Timestamp { get; set; }
     }
 }

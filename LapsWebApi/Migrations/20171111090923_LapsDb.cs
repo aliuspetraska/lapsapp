@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace LapsWebApi.Migrations
 {
-    public partial class LapsAppDb : Migration
+    public partial class LapsDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,8 @@ namespace LapsWebApi.Migrations
                     Id = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     Coordinates = table.Column<string>(type: "longtext", nullable: false),
                     Distance = table.Column<double>(type: "double", nullable: false),
-                    Thumbnail = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
+                    Thumbnail = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {

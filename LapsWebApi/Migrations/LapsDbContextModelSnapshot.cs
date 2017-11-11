@@ -10,11 +10,10 @@ using System;
 
 namespace LapsWebApi.Migrations
 {
-    [DbContext(typeof(LapsAppDbContext))]
-    [Migration("20171111075650_LapsAppDb")]
-    partial class LapsAppDb
+    [DbContext(typeof(LapsDbContext))]
+    partial class LapsDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,6 +34,8 @@ namespace LapsWebApi.Migrations
                     b.Property<string>("Thumbnail")
                         .IsRequired()
                         .HasMaxLength(255);
+
+                    b.Property<DateTime>("Timestamp");
 
                     b.HasKey("Id");
 

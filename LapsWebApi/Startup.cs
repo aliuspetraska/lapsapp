@@ -46,7 +46,7 @@ namespace LapsWebApi
 
             if (!string.IsNullOrEmpty(databaseUri))
             {
-                services.AddDbContext<LapsAppDbContext>(options => options.UseMySql(
+                services.AddDbContext<LapsDbContext>(options => options.UseMySql(
                     GetConnectionString(databaseUri)));
 
                 services.AddDataProtection()
@@ -99,7 +99,7 @@ namespace LapsWebApi
         }
     }
 
-    public class LapsAppDbContext : DbContext
+    public class LapsDbContext : DbContext
     {
         public DbSet<Track> Tracks { get; set; }
 
@@ -108,10 +108,10 @@ namespace LapsWebApi
         // https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/migrations
 
         // dotnet ef migrations remove
-        // dotnet ef migrations add LapsAppDb
+        // dotnet ef migrations add LapsDb
         // dotnet ef database update
 
-        public LapsAppDbContext(DbContextOptions options) : base(options) { }
-        public LapsAppDbContext() { }
+        public LapsDbContext(DbContextOptions options) : base(options) { }
+        public LapsDbContext() { }
     }
 }
