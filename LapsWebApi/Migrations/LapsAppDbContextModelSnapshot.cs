@@ -23,14 +23,17 @@ namespace LapsWebApi.Migrations
             modelBuilder.Entity("LapsWebApi.Models.Track", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(255);
 
                     b.Property<string>("Coordinates")
                         .IsRequired();
 
                     b.Property<double>("Distance");
 
-                    b.Property<double>("Thumbnail");
+                    b.Property<string>("Thumbnail")
+                        .IsRequired()
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 

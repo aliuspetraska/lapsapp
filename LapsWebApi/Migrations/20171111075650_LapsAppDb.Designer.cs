@@ -11,7 +11,7 @@ using System;
 namespace LapsWebApi.Migrations
 {
     [DbContext(typeof(LapsAppDbContext))]
-    [Migration("20171110141610_LapsAppDb")]
+    [Migration("20171111075650_LapsAppDb")]
     partial class LapsAppDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,14 +24,17 @@ namespace LapsWebApi.Migrations
             modelBuilder.Entity("LapsWebApi.Models.Track", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(255);
 
                     b.Property<string>("Coordinates")
                         .IsRequired();
 
                     b.Property<double>("Distance");
 
-                    b.Property<double>("Thumbnail");
+                    b.Property<string>("Thumbnail")
+                        .IsRequired()
+                        .HasMaxLength(255);
 
                     b.HasKey("Id");
 

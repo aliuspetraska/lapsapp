@@ -5,8 +5,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Xml;
+using LapsWebApi.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PolylineEncoder.Net.Models;
 using PolylineEncoder.Net.Utility;
 
@@ -19,9 +21,13 @@ namespace LapsWebApi.Controllers
 
         private WebClient webClient = new WebClient();
 
-        public ImportController(IHostingEnvironment env)
+        private readonly LapsAppDbContext _lapsAppDbContext;
+
+        public ImportController(IHostingEnvironment env, LapsAppDbContext lapsAppDbContext = null)
         {
             _env = env;
+
+            _lapsAppDbContext = lapsAppDbContext;
         }
 
         [HttpGet]
@@ -55,6 +61,29 @@ namespace LapsWebApi.Controllers
                         HttpUtility.UrlEncode(polyline) + ")/auto/500x300?access_token=pk.eyJ1IjoiYWxpdXNwZXRyYXNrYSIsImEiOiJjajlxd3pmbjg2OGR6MnFxdDk5M205dmI1In0.6zIodwQbHVLbPfbhBEdRhg";
 
                     webClient.DownloadFile(url, Path.Combine(_env.WebRootPath, "images", Path.GetFileName(file).Replace(".gpx", string.Empty) + ".png"));
+
+                    if (_lapsAppDbContext != null)
+                    {
+                        var trackId = Path.GetFileName(file).Replace(".gpx", string.Empty);
+
+                        var track = new Track
+                        {
+                            Id = trackId,
+                            Coordinates = JsonConvert.SerializeObject(result),
+                            Distance = distance,
+                            Thumbnail = "https://lapsapp.mybluemix.net/images/" + trackId + ".png"
+                        };
+
+                        if (_lapsAppDbContext.Tracks.ToList().Any(row => row.Id == track.Id))
+                        {
+                            Console.WriteLine("Track already imported. Update.");
+                        } 
+                        else 
+                        {
+                            _lapsAppDbContext.Add(track);
+                            _lapsAppDbContext.SaveChanges();
+                        }
+                    }
                 }
 
                 return Json(new { 

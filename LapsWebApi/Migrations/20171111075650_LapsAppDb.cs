@@ -12,10 +12,10 @@ namespace LapsWebApi.Migrations
                 name: "Tracks",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(127)", nullable: false),
+                    Id = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     Coordinates = table.Column<string>(type: "longtext", nullable: false),
                     Distance = table.Column<double>(type: "double", nullable: false),
-                    Thumbnail = table.Column<double>(type: "double", nullable: false)
+                    Thumbnail = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {

@@ -6,7 +6,7 @@ namespace LapsWebApi.Models
     {
         [Key]
         [Required]
-        [MaxLength]
+        [StringLength(255)]
         public string Id { get; set; }
 
         [Required]
@@ -18,7 +18,7 @@ namespace LapsWebApi.Models
         public double Distance { get; set; }
 
         [Required]
-        [MaxLength]
-        public double Thumbnail { get; set; }
+        [StringLength(255)]
+        public string Thumbnail { get; set; }
     }
 }
