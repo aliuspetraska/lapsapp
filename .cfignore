@@ -36,3 +36,6 @@ vcap-local.json
 .DS_Store
 .idea/
 .droidres/
+
+# Project Related
+**/wwwroot/images/**/*.png
