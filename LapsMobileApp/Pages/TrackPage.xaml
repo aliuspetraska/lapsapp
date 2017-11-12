@@ -12,8 +12,9 @@
             Padding="0" 
             Margin="0">
             <WebView x:Name="webView"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
+                Source="https://lapsapp.mybluemix.net/mapbox.html"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
                 IsVisible="false">
             </WebView>
             <ActivityIndicator x:Name="activityIndicator"

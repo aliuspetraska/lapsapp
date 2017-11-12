@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <title>mapbox</title>
+    <script type="text/javascript" src="coordinates.js"></script>
     <script type="text/javascript" src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.js"></script>
     <link type="text/css" rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.css" />
     <style type="text/css">
@@ -26,15 +27,136 @@
 <body>
 <div id="map"></div>
 <script type="text/javascript">
+    function degToRad(deg){
+        return deg * Math.PI / 180.0;
+    }
+
+    function radToDeg(rad){
+        rad = rad * (180.0 / Math.PI);
+        if (rad < 0) rad = 360.0 + rad;
+        return rad;
+    }
+</script>
+<script type="text/javascript">
     mapboxgl.accessToken = 'pk.eyJ1IjoiYWxpdXNwZXRyYXNrYSIsImEiOiJjajlxd3pmbjg2OGR6MnFxdDk5M205dmI1In0.6zIodwQbHVLbPfbhBEdRhg';
 
     var map = new mapboxgl.Map({
-        style: 'mapbox://styles/mapbox/streets-v10',
+        style: 'mapbox://styles/mapbox/light-v9',
         container: 'map',
-        center: [25.216137,54.737057],
-        zoom: 19,
+        center: coordinates[0],
+        zoom: 20,
         pitch: 45,
-        bearing: 20
+        bearing: 0,
+        interactive: false
+    });
+
+    var point = {
+        type: "Point",
+        coordinates: coordinates[0]
+    };
+
+    var points = [coordinates[0]];
+
+    var route = {
+        type: "Feature",
+        geometry: {
+            type: "LineString",
+            coordinates: points
+        }
+    };
+
+    map.on('load', function () {
+        // Insert the layer beneath any symbol layer.
+        var layers = map.getStyle().layers.reverse();
+
+        var labelLayerIdx = layers.findIndex(function (layer) {
+            return layer.type !== 'symbol';
+        });
+
+        var labelLayerId = labelLayerIdx !== -1 ? layers[labelLayerIdx].id : undefined;
+
+        map.addLayer({
+            'id': '3d-buildings',
+            'source': 'composite',
+            'source-layer': 'building',
+            'filter': ['==', 'extrude', 'true'],
+            'type': 'fill-extrusion',
+            'minzoom': 15,
+            'paint': {
+                'fill-extrusion-color': '#aaa',
+                'fill-extrusion-height': {
+                    'type': 'identity',
+                    'property': 'height'
+                },
+                'fill-extrusion-base': {
+                    'type': 'identity',
+                    'property': 'min_height'
+                },
+                'fill-extrusion-opacity': .6
+            }
+        }, labelLayerId);
+
+        map.addSource('marker', { type: 'geojson', data: point });
+        map.addLayer({
+            "id": "marker",
+            "type": "circle",
+            "source": "marker",
+            "paint": {
+                "circle-radius": 18,
+                "circle-color": "#ff0000",
+                "circle-opacity": 0.4
+            }
+        });
+
+        map.addSource("route", { type: "geojson", data: route });
+        map.addLayer({
+            "id": "route",
+            "type": "line",
+            "source": "route",
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "#ff0000",
+                "line-width": 8
+            }
+        });
+
+        var tick = 1;
+
+        setInterval(function () {
+            if (tick < coordinates.length) {
+
+                var lon1 = degToRad(coordinates[tick - 1][0]);
+                var lon2 = degToRad(coordinates[tick][0]);
+                var lat1 = degToRad(coordinates[tick - 1][1]);
+                var lat2 = degToRad(coordinates[tick][1]);
+
+                var a = Math.sin(lon2 - lon1) * Math.cos(lat2);
+                var b = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1);
+                var c = radToDeg(Math.atan2(a, b));
+
+                if (c === 0) {
+                    c = map.getBearing();
+                }
+
+                // https://www.mapbox.com/mapbox-gl-js/example/rotating-controllable-marker/
+                point.coordinates = coordinates[tick];
+                map.getSource('marker').setData(point);
+
+                points.push(coordinates[tick]);
+                route.geometry.coordinates = points;
+                map.getSource('route').setData(route);
+
+                map.easeTo({
+                    center: coordinates[tick],
+                    bearing: c
+                });
+
+                tick += 1;
+            }
+        }, 250);
     });
 </script>
 </body>

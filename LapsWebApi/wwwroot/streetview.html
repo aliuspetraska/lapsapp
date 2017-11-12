@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>streetview</title>
+    <script type="text/javascript" src="coordinates.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script type="text/javascript">
+    function degToRad(deg){
+        return deg * Math.PI / 180.0;
+    }
+
+    function radToDeg(rad){
+        rad = rad * (180.0 / Math.PI);
+        if (rad < 0) rad = 360.0 + rad;
+        return rad;
+    }
+</script>
+<script type="text/javascript">
+    var panorama;
+
+    function initialize() {
+        panorama = new google.maps.StreetViewPanorama(
+            document.getElementById('map'),
+            {
+                position: {
+                    lat: coordinates[0][1],
+                    lng: coordinates[0][0]
+                },
+                pov: {
+                    heading: 165,
+                    pitch: 0
+                },
+                zoom: 1
+            });
+
+        var tick = 1;
+
+        setInterval(function () {
+            if (tick < coordinates.length) {
+                var lon1 = degToRad(coordinates[tick - 1][0]);
+                var lon2 = degToRad(coordinates[tick][0]);
+                var lat1 = degToRad(coordinates[tick - 1][1]);
+                var lat2 = degToRad(coordinates[tick][1]);
+
+                var a = Math.sin(lon2 - lon1) * Math.cos(lat2);
+                var b = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1);
+                var c = radToDeg(Math.atan2(a, b));
+
+                panorama.setPosition({
+                    lat: coordinates[tick][1],
+                    lng: coordinates[tick][0]
+                });
+
+                panorama.setPov({
+                    heading: c,
+                    pitch: 0
+                });
+
+                tick += 1;
+            }
+        }, 500);
+    }
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQLIKx7xHqvIGiJ3bbp-6IHAb6UzS8dsk&callback=initialize" async defer></script>
+</body>
+</html>
