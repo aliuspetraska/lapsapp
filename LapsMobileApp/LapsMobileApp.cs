@@ -11,7 +11,7 @@ namespace LapsMobileApp
             // The root page of your application
             MainPage = new NavigationPage(new TracksPage
             {
-                Title = "Tracks List"
+                Title = "Tracks Page"
             });
         }
 

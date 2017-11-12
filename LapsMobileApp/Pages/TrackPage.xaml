@@ -1,5 +1,30 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="LapsMobileApp.Pages.TrackPage">
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="LapsMobileApp.Pages.TrackPage"
+    Padding="0" BackgroundColor="#F2F2F2">
 	<ContentPage.Content>
+        <StackLayout HorizontalOptions="FillAndExpand" 
+            VerticalOptions="FillAndExpand" 
+            Orientation="Vertical" 
+            Spacing="0" 
+            Padding="0" 
+            Margin="0">
+            <WebView x:Name="webView"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                IsVisible="false">
+            </WebView>
+            <ActivityIndicator x:Name="activityIndicator"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                BackgroundColor="#F2F2F2"
+                IsEnabled="true"
+                IsRunning="true"
+                IsVisible="true"
+                Color="Black">
+            </ActivityIndicator>
+        </StackLayout>
 	</ContentPage.Content>
 </ContentPage>
