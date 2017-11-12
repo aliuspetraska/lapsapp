@@ -41,11 +41,11 @@
     mapboxgl.accessToken = 'pk.eyJ1IjoiYWxpdXNwZXRyYXNrYSIsImEiOiJjajlxd3pmbjg2OGR6MnFxdDk5M205dmI1In0.6zIodwQbHVLbPfbhBEdRhg';
 
     var map = new mapboxgl.Map({
-        style: 'mapbox://styles/mapbox/light-v9',
+        style: 'mapbox://styles/mapbox/satellite-streets-v10',
         container: 'map',
         center: coordinates[0],
-        zoom: 20,
-        pitch: 45,
+        zoom: 18.25,
+        pitch: 60,
         bearing: 0,
         interactive: false
     });
@@ -66,36 +66,6 @@
     };
 
     map.on('load', function () {
-        // Insert the layer beneath any symbol layer.
-        var layers = map.getStyle().layers.reverse();
-
-        var labelLayerIdx = layers.findIndex(function (layer) {
-            return layer.type !== 'symbol';
-        });
-
-        var labelLayerId = labelLayerIdx !== -1 ? layers[labelLayerIdx].id : undefined;
-
-        map.addLayer({
-            'id': '3d-buildings',
-            'source': 'composite',
-            'source-layer': 'building',
-            'filter': ['==', 'extrude', 'true'],
-            'type': 'fill-extrusion',
-            'minzoom': 15,
-            'paint': {
-                'fill-extrusion-color': '#aaa',
-                'fill-extrusion-height': {
-                    'type': 'identity',
-                    'property': 'height'
-                },
-                'fill-extrusion-base': {
-                    'type': 'identity',
-                    'property': 'min_height'
-                },
-                'fill-extrusion-opacity': .6
-            }
-        }, labelLayerId);
-
         map.addSource('marker', { type: 'geojson', data: point });
         map.addLayer({
             "id": "marker",
@@ -119,7 +89,8 @@
             },
             "paint": {
                 "line-color": "#ff0000",
-                "line-width": 8
+                "line-width": 8,
+                "line-opacity": 0.4
             }
         });
 
